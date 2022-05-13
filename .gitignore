@@ -33,4 +33,4 @@ yarn-error.log*
 *.sln
 
 Env.vue
-src/Env.vue
+src/Env.js
