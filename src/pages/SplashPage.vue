@@ -1,17 +1,87 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/logo.jpg"
-      style="width: 300px; height: 225px"
-    >
+  <q-page class="flex flex-center cont">
+    <h3>
+      <span id="first">Pocket</span>
+      <span id="second">Contractor</span>
+    </h3>
+
+    <div class="flex-container">
+      <q-btn label="Sign Up" type="submit" color="grey"/>
+      <q-btn label="Log in" type="submit" color="primary" class="q-ml-sm" />
+    </div>
   </q-page>
 </template>
 
 <script>
-// import {  } from 'vue'
+import { useQuasar, QSpinnerFacebook  } from 'quasar'
+import { ref, onMounted  } from 'vue'
+
 
 export default ({
+  setup () {
+    const $q = useQuasar()
+    let timer
 
+    onMounted( () => {
+      $q.loading.show({
+
+        spinnerColor: 'red',
+        spinnerSize: 240,
+        backgroundColor: 'burgundy',
+        message: 'Loading...',
+        messageColor: 'white'
+      })
+
+      // hiding in 3s
+      timer = setTimeout(() => {
+        $q.loading.hide()
+        timer = void 0
+      }, 3000)
+
+    })
+  }
 })
 </script>
+
+<style lang="sass">
+@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap')
+
+.cont
+  background-image: linear-gradient(#DC143C, #870c25)
+
+
+.flex-container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  height: 100px
+
+  button
+    margin: 0 auto
+    align-self: unset
+    width:200px
+
+
+h3
+  margin: 10px
+  font-size: 3em
+  text-align: center
+
+  .text-subtitle1
+    text-align: center
+
+#second
+  font-family: 'Koulen', cursive
+  color: rgba(beige , 0.7 )
+
+#first
+  font-family: 'Lobster', cursive
+  margin: 0px 5px
+
+.login-input > div
+  background: grey
+  min-width: 800px
+
+
+</style>
