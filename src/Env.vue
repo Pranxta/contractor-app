@@ -1,5 +1,5 @@
 <script>
 export default {
-  test: "nothing"
+  test: "nothing to see here"
 }
 </script>
