@@ -7,14 +7,26 @@
         @reset="onReset"
         class="q-gutter-sm"
       >
-        <h3>Sign Up</h3>
+        <h4>Sign Up</h4>
+        <p class="text-subtitle1">SME</p>
 
         <q-input
           class="login-input"
           filled
           v-model="name"
-          label="Your name *"
-          hint="Name and surname"
+          label="Organization name"
+          hint="Name of the company"
+          lazy-rules
+          :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+
+
+        <q-input
+          class="login-input"
+          filled
+          v-model="name"
+          label="name *"
+          hint="Manager's Name and surname"
           lazy-rules
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
@@ -24,7 +36,7 @@
           filled
           type="email"
           v-model="email"
-          label="Your email address"
+          label="email address"
           hint="has to be a valid email address"
           lazy-rules
         />
@@ -34,7 +46,7 @@
           filled
           type="tel"
           v-model="phone"
-          label="Your phone number"
+          label="phone number"
           hint="start with +8801"
           lazy-rules
         />
@@ -44,7 +56,7 @@
           filled
           type="text"
           v-model="address"
-          label="Your address"
+          label="address"
           hint="enter your billing address"
           lazy-rules
         />
@@ -62,15 +74,27 @@
         <q-input
           class="login-input"
           filled
-          type="phone"
-          v-model="phone"
-          label="Your phone number"
-          hint="start with +8801"
+          type="text"
+          v-model="tradeLicence"
+          label="Trade Licence"
+          hint="Trade Licence"
           lazy-rules
         />
 
+        <q-input
+          class="login-input"
+          filled
+          type="text"
+          v-model="TIN"
+          label="TIN"
+          hint="TIN number"
+          lazy-rules
+        />
+
+
+
         <div class="flex-container">
-          <q-btn label="Submit" type="submit" color="primary"/>
+          <q-btn label="Sign Up" type="submit" color="primary"/>
           <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
@@ -81,16 +105,36 @@
 
 <script>
 
-import { useQuasar } from 'quasar'
-import { ref } from 'vue'
+import { useQuasar, QSpinnerFacebook } from 'quasar'
+import { ref, onMounted } from 'vue'
 
 export default {
   setup () {
     const $q = useQuasar()
+    let timer
 
     const name = ref(null)
     const age = ref(null)
     const accept = ref(false)
+
+
+    onMounted( () => {
+      $q.loading.show({
+
+        spinnerColor: 'red',
+        spinnerSize: 240,
+        backgroundColor: 'burgundy',
+        message: 'Confirming...',
+        messageColor: 'white'
+      })
+
+      // hiding in 3s
+      timer = setTimeout(() => {
+        $q.loading.hide()
+        timer = void 0
+      }, 3000)
+
+    })
 
     return {
       name,
@@ -138,10 +182,19 @@ export default {
 .signup
   min-width: 300px
 
-  h3
+  h4
+    margin: 10px 10px 0px 10px
     text-align: center
+
+  .text-subtitle1
+    text-align: center
+
+
+
 
 .login-input > div
   background: grey
   min-width: 800px
+
+
 </style>
