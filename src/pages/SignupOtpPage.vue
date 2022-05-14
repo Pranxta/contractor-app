@@ -13,8 +13,6 @@
         <q-input
           class="login-input"
           filled
-          v-model="otp"
-
           hint="Confirm your 4 digit OTP code"
           lazy-rules
           :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -32,7 +30,7 @@
 
 <script>
 
-import { useQuasar, QSpinnerFacebook  } from 'quasar'
+import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
 
 export default {
@@ -50,7 +48,7 @@ export default {
 
         spinnerColor: 'red',
         spinnerSize: 240,
-        backgroundColor: 'burgundy',
+        backgroundColor: 'black',
         message: 'Confirming...',
         messageColor: 'white'
       })
@@ -102,11 +100,6 @@ export default {
 <style lang="sass" scoped>
 .cont
   background-image: linear-gradient(#DC143C, #870c25)
-
-
-.flex-container
-  display: flex
-  justify-content: center
 
 .signup
   min-width: 300px

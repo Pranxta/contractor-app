@@ -1,11 +1,10 @@
 <template>
   <q-page class="flex flex-center cont">
-    <h3>
-      <span id="first">Pocket</span>
-      <span id="second">Contractor</span>
-    </h3>
-
-    <div class="flex-container">
+    <div class="flex-container q-pa-md">
+      <h3>
+        <span id="first">Pocket</span>
+        <span id="second">Contractor</span>
+      </h3>
       <q-btn label="Sign Up" type="submit" color="grey"/>
       <q-btn label="Log in" type="submit" color="primary" class="q-ml-sm" />
     </div>
@@ -29,7 +28,7 @@ export default ({
         spinnerSize: 240,
         backgroundColor: 'burgundy',
         message: 'Loading...',
-        messageColor: 'white'
+        messageColor: 'black'
       })
 
       // hiding in 3s
@@ -54,9 +53,8 @@ export default ({
 .flex-container
   display: flex
   flex-direction: column
-  justify-content: space-between
-  height: 100px
-
+  justify-content: space-evenly
+  height: 250px
   button
     margin: 0 auto
     align-self: unset
@@ -65,6 +63,7 @@ export default ({
 
 h3
   margin: 10px
+  padding: 10px
   font-size: 3em
   text-align: center
 
