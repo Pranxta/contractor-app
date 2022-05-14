@@ -55,6 +55,7 @@ export default ({
   flex-direction: column
   justify-content: space-evenly
   height: 250px
+
   button
     margin: 0 auto
     align-self: unset

@@ -1,7 +1,7 @@
 <template>
-  <q-page class="flex flex-center cont">
+  <q-page class="cont">
 
-    <div class="signup">
+    <div class=" flex-container signup">
       <q-form
         @submit="onSubmit"
         @reset="onReset"
@@ -100,6 +100,12 @@ export default {
 <style lang="sass" scoped>
 .cont
   background-image: linear-gradient(#DC143C, #870c25)
+
+
+.flex-container
+  display: flex
+  justify-content: space-evenly
+  height: 100px
 
 .signup
   min-width: 300px

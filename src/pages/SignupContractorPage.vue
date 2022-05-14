@@ -158,7 +158,8 @@ export default {
   justify-content: center
 
 .signup
-  min-width: 300px
+  max-width: none
+  min-width: 240px
 
   h4
     margin: 10px 10px 0px 10px
