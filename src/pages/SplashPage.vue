@@ -2,8 +2,8 @@
   <q-page class="flex flex-center cont">
     <div class="flex-container q-pa-md">
       <h3>
-        <span id="first">Pocket</span>
-        <span id="second">Contractor</span>
+        <span id="first">{{first}}</span>
+        <span id="second">{{last}}</span>
       </h3>
       <q-btn label="Sign Up" type="submit" color="grey"/>
       <q-btn label="Log in" type="submit" color="primary" class="q-ml-sm" />
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import env from './Env.js'
 import { useQuasar, QSpinnerFacebook  } from 'quasar'
 import { ref, onMounted  } from 'vue'
 
@@ -38,6 +39,11 @@ export default ({
       }, 3000)
 
     })
+
+    return {
+      first: env.appNameFirst,
+      last: env.appNameLast
+    }
   }
 })
 </script>
