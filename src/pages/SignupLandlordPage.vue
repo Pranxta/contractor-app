@@ -155,11 +155,15 @@ export default {
 
 .flex-container
   display: flex
+  flex-direction: column
   justify-content: center
 
 .signup
+  margin-top: 40px
   min-width: 300px
 
+  button
+    margin: 10px auto
   h4
     margin: 10px 10px 0px 10px
     text-align: center

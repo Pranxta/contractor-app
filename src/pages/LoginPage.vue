@@ -2,19 +2,24 @@
   <q-page class="flex flex-center cont">
 
     <div class="signup">
+      <h3>
+        <span id="first">{{first}}</span>
+        <span id="second">{{last}}</span>
+      </h3>
+
       <q-form
         @submit="onSubmit"
         @reset="onReset"
         class="q-gutter-sm"
       >
-        <h4>Sign Up</h4>
-        <p class="text-subtitle1">Contractor</p>
+        <h4>Log In</h4>
+
         <q-input
           class="login-input"
           filled
-          v-model="name"
-          label="name *"
-          hint="Name and surname"
+          v-model="tel"
+          label="Phone Number *"
+          hint="Registered phone number that was used to sign up"
           lazy-rules
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
@@ -22,53 +27,12 @@
         <q-input
           class="login-input"
           filled
-          type="email"
-          v-model="email"
-          label="email address"
-          hint="has to be a valid email address"
+          type="password"
+          v-model="password"
+          label="password"
+          hint="the password for this account"
           lazy-rules
         />
-
-        <q-input
-          class="login-input"
-          filled
-          type="tel"
-          v-model="phone"
-          label="phone number"
-          hint="start with +8801"
-          lazy-rules
-        />
-
-        <q-input
-          class="login-input"
-          filled
-          type="text"
-          v-model="address"
-          label="address"
-          hint="enter your billing address"
-          lazy-rules
-        />
-
-        <q-input
-          class="login-input"
-          filled
-          type="text"
-          v-model="address2"
-          label="address line 2"
-          hint="leave empty if not needed"
-          lazy-rules
-        />
-
-        <q-input
-          class="login-input"
-          filled
-          type="text"
-          v-model="NID"
-          label="nid number"
-          hint="your NID number"
-          lazy-rules
-        />
-
 
 
         <div class="flex-container">
@@ -82,9 +46,10 @@
 </template>
 
 <script>
-
-import { useQuasar, QSpinnerFacebook  } from 'quasar'
+import env from './Env.js'
+import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
+
 
 export default {
   setup () {
@@ -113,8 +78,9 @@ export default {
 
     })
 
-
     return {
+      first: env.appNameFirst,
+      last: env.appNameLast,
       name,
       age,
       accept,
@@ -149,6 +115,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap')
+
+
 .cont
   background-image: linear-gradient(#DC143C, #870c25)
 
@@ -156,18 +126,24 @@ export default {
 .flex-container
   display: flex
   flex-direction: column
-  justify-content: space-evenly
+  justify-content: space-between
+  height: 100vh
+
+.signup
+  margin-top: 100px
+  width: 90vw
 
   button
     margin: 10px auto
 
-.signup
-  max-width: none
-  margin-top: 40px
-  min-width: 240px
-
   h4
     margin: 10px 10px 0px 10px
+    text-align: center
+
+  h3
+    margin: 10px auto
+    padding: 10px
+    font-size: 3em
     text-align: center
 
   .text-subtitle1
@@ -180,5 +156,13 @@ export default {
   background: grey
   min-width: 800px
 
+
+#second
+  font-family: 'Koulen', cursive
+  color: rgba(beige , 0.7 )
+
+#first
+  font-family: 'Lobster', cursive
+  margin: 0px 5px
 
 </style>

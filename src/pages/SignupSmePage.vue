@@ -95,7 +95,7 @@
 
         <div class="flex-container">
           <q-btn label="Sign Up" type="submit" color="primary"/>
-          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+          <q-btn label="Reset" type="reset" color="grey"  class="q-ml-sm" />
         </div>
       </q-form>
     </div>
@@ -180,7 +180,11 @@ export default {
   justify-content: center
 
 .signup
+  margin-top: 40px
   min-width: 300px
+
+  button
+    margin: 10px auto
 
   h4
     margin: 10px 10px 0px 10px
