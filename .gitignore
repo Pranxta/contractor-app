@@ -32,5 +32,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-Env.vue
-src/Env.js
+src/pages/Env.js
