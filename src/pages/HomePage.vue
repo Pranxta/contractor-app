@@ -1,44 +1,25 @@
 <template>
-  <q-page class="flex flex-center cont">
+  <q-page class="flex row wrap justify-start content-start cont">
 
-    <div class="signup">
-      <h3>
-        <span id="first">{{first}}</span>
-        <span id="second">{{last}}</span>
-      </h3>
-
-      <q-form
-        @submit="onSubmit"
-        @reset="onReset"
-        class="q-gutter-sm"
-      >
-        <h4>Log In</h4>
-
-        <q-input
-          class="login-input"
-          filled
-          v-model="tel"
-          label="Phone Number *"
-          hint="Registered phone number that was used to sign up"
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-        />
-
-        <q-input
-          class="login-input"
-          filled
-          type="password"
-          v-model="password"
-          label="password"
-          hint="the password for this account"
-          lazy-rules
-        />
+    <div class="q-pa-md">
+      <h4>Hello</h4>
+    </div>
 
 
-        <div class="flex-container">
-          <q-btn label="Sign Up" type="submit" color="primary"/>
-        </div>
-      </q-form>
+    <div class="q-pa-md">
+      <h4>Hello</h4>
+    </div>
+
+    <div class="q-pa-md">
+      <h4>Hello</h4>
+    </div>
+
+    <div class="q-pa-md">
+      <h4>Hello</h4>
+    </div>
+
+    <div class="q-pa-md">
+      <h4>Hello</h4>
     </div>
 
   </q-page>
@@ -118,15 +99,12 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap')
 
 
+*
+  color: black
+
 .cont
-  background-image: linear-gradient(#DC143C, #870c25)
-
-
-.flex-container
-  display: flex
-  flex-direction: column
-  justify-content: space-space-evenly
-  height: 100vh
+  background: white
+  color: grey
 
 .signup
   margin-top: 100px
@@ -150,9 +128,10 @@ export default {
 
 
 
+
 .login-input > div
-  background: grey
-  min-width: 800px
+    background: white
+    min-width: 800px
 
 
 #second

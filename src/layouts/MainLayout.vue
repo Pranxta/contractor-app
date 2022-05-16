@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+    <q-header>
+      <q-toolbar class="bg-red-12">
         <q-btn
           flat
           dense
@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          <span id="first">{{first}}</span><span id="second">{{last}}</span>
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -46,8 +46,12 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import env from '../pages/Env.js'
+import { useQuasar } from 'quasar'
+import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+
+
 
 const linksList = [
   {
@@ -94,23 +98,41 @@ const linksList = [
   }
 ]
 
-export default defineComponent({
-  name: 'MainLayout',
+export default {
 
   components: {
     EssentialLink
   },
 
   setup () {
+    const $q = useQuasar()
+    $q.dark.set(true)
+
     const leftDrawerOpen = ref(false)
 
     return {
+      first: env.appNameFirst,
+      last: env.appNameLast,
       essentialLinks: linksList,
       leftDrawerOpen,
+
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
   }
-})
+}
 </script>
+<style lang="sass" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap')
+
+#second
+  font-family: 'Koulen', cursive
+  color: rgba(beige , 0.7 )
+
+#first
+  font-family: 'Lobster', cursive
+  margin: 0px 5px
+
+</style>
