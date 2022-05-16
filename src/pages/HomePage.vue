@@ -1,26 +1,137 @@
 <template>
-  <q-page class="flex row wrap justify-start content-start cont">
+  <q-page class="cont">
 
-    <div class="q-pa-md">
-      <h4>Hello</h4>
+    <div class="subtitle q-pa-sm">
+      Products > Categories
+      <q-separator color="grey" />
     </div>
 
 
-    <div class="q-pa-md">
-      <h4>Hello</h4>
+    <div class="row justify-start">
+      <q-card class="my-card col-sm-3 q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card col-sm-3 q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card col-sm-3 q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card col-sm-3 q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+
+
     </div>
 
-    <div class="q-pa-md">
-      <h4>Hello</h4>
+
+
+    <div class="subtitle q-pa-sm">
+      Articles
+      <q-separator color="grey" />
     </div>
 
-    <div class="q-pa-md">
-      <h4>Hello</h4>
+    <div class="row justify-start">
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+
+
     </div>
 
-    <div class="q-pa-md">
-      <h4>Hello</h4>
+
+
+    <div class="subtitle q-pa-sm">
+      Tools
+      <q-separator color="grey" />
     </div>
+
+    <div class="row justify-start">
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+      <q-card class="my-card q-ma-sm">
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom text-subtitle2 text-center">
+            Title
+          </div>
+        </q-img>
+      </q-card>
+
+
+
+    </div>
+
 
   </q-page>
 </template>
@@ -100,34 +211,17 @@ export default {
 
 
 *
-  color: black
+  color: grey
+
+.my-card
+  height: 60px
+  width: 70px
+
+  .text-h3
+    font-size: 14px
 
 .cont
   background: white
-  color: grey
-
-.signup
-  margin-top: 100px
-  width: 90vw
-
-  button
-    margin: 10px auto
-
-  h4
-    margin: 10px 10px 0px 10px
-    text-align: center
-
-  h3
-    margin: 10px auto
-    padding: 10px
-    font-size: 3em
-    text-align: center
-
-  .text-subtitle1
-    text-align: center
-
-
-
 
 .login-input > div
     background: white
@@ -141,5 +235,8 @@ export default {
 #first
   font-family: 'Lobster', cursive
   margin: 0px 5px
+
+.subtitle
+  font-family: 'Koulen', cursive
 
 </style>

@@ -15,7 +15,16 @@
           <span id="first">{{first}}</span><span id="second">{{last}}</span>
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn
+            id="search"
+            flat
+            dark
+            icon-right="search"
+          >
+          </q-btn>
+        </div>
+
       </q-toolbar>
     </q-header>
 
@@ -130,9 +139,15 @@ export default {
 #second
   font-family: 'Koulen', cursive
   color: rgba(beige , 0.7 )
+  font-size: 18px
 
 #first
   font-family: 'Lobster', cursive
-  margin: 0px 5px
+  margin: 0px 2px
+  font-size: 18px
 
+#search
+  align-items: right
+  width: 50px
+  margin-right: -5px
 </style>
