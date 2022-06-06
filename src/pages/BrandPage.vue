@@ -2,7 +2,7 @@
   <q-page class="cont">
 
     <div class="subtitle q-pa-sm">
-      Category > Brands
+      {{cat}} > Brands
       <q-separator color="grey" />
     </div>
 
@@ -10,83 +10,33 @@
     <div class="col">
 
       <div>
-        <div class="brand row">
+        <div v-for="brand in allBrands" class="brand row">
 
           <div class="float-left brand-img col">
             <img class="prod-img" src="~/assets/rods.jpg">
           </div>
 
           <div class="brand-text float-right text-right">
-            <span class="text-h6">Brand Name</span>
+            <span class="text-h6">{{brand.name}}</span>
             <br>
             <span class="text-subtitle">
-              Brand description goes here Brand description goes here
+              {{brand.description}}
             </span>
             <br>
             <q-btn color="primary">
               view products
             </q-btn>
           </div>
-
+          <div class="subtitle col q-pa-sm">
+            <q-separator color="grey" />
+          </div>
         </div>
 
-        <div class="subtitle col q-pa-sm">
-          <q-separator color="grey" />
-        </div>
+
       </div>
 
 
-      <div>
-        <div class="brand row">
 
-          <div class="float-left brand-img col">
-            <img class="prod-img" src="~/assets/rods.jpg">
-          </div>
-
-          <div class="brand-text text-right float-right">
-            <span class="text-h6">Brand Name</span>
-            <br>
-            <span class="text-subtitle">
-              Brand description goes here Brand description goes here
-            </span>
-            <br>
-            <q-btn color="primary">
-              view products
-            </q-btn>
-          </div>
-
-        </div>
-
-        <div class="subtitle col q-pa-sm">
-          <q-separator color="grey" />
-        </div>
-      </div>
-
-      <div>
-        <div class="brand row">
-
-          <div class="float-left brand-img col">
-            <img class="prod-img" src="~/assets/rods.jpg">
-          </div>
-
-          <div class="brand-text float-right text-right">
-            <span class="text-h6">Brand Name</span>
-            <br>
-            <span class="text-subtitle">
-              Brand description goes here Brand description goes here
-            </span>
-            <br>
-            <q-btn color="primary">
-              view products
-            </q-btn>
-          </div>
-
-        </div>
-
-        <div class="subtitle col q-pa-sm">
-          <q-separator color="grey" />
-        </div>
-      </div>
 
 
     </div>
@@ -113,7 +63,8 @@ export default {
   setup () {
     const $q = useQuasar()
     const route = useRoute()
-    const products = ref([])
+    const cat = ref("")
+    const allBrands = ref([])
 
     onMounted( () => {
       $q.loading.show({
@@ -125,17 +76,32 @@ export default {
         messageColor: 'white'
       })
 
-      const url = env.BASE_URL + "products"
+      let products = []
+      let brands = []
+      let filteredBrands = []
+
+      const category = route.params.cat
+      cat.value = category
+
+      const url = env.BASE_URL + "products/"
+
       axios.get(url)
       .then(
         resp => {
-          products.value = resp.data
-          console.log(products.value)
-          $q.loading.hide()
+          products = resp.data
+
+          products.forEach(element => {
+            brands.push(element.brand)
+          })
+          filteredBrands = [...new Set(brands)]
+          console.log("filteredBrands: ",filteredBrands)
+          getBrands(filteredBrands)
         }
-      ).catch(
+      )
+      .catch(
         err => console.log(err)
       )
+
 
       // hiding in 3s
       // timer = setTimeout(() => {
@@ -145,9 +111,24 @@ export default {
 
     })
 
+    function getBrands(arr) {
+      arr.forEach(el => {
+        axios.get(env.BASE_URL+"brands/"+el)
+        .then(res => {
+          allBrands.value.push(res.data)
+          console.log("brands:",res.data)
+        })
+        .catch(
+          err => console.log(err)
+        )
+      })
+    }
+
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
+      cat,
+      allBrands
 
     }
   }

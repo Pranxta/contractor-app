@@ -169,7 +169,7 @@ export default {
     })
 
     function viewRods () {
-      router.push('/home/products/rods')
+      router.push('/home/brands/rods')
     }
 
     return {

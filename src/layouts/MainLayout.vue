@@ -24,7 +24,7 @@
             dark
             icon-right="shopping_cart"
           >
-          <q-badge color="green" floating>{{1}}</q-badge>
+          <q-badge color="green" floating>{{0}}</q-badge>
           </q-btn>
 
 
