@@ -7,35 +7,35 @@
     </div>
 
 
-    <div class="row justify-start">
+    <div class="row justify-evenly">
       <q-card class="my-card col-sm-3 q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
+        <q-img src="~/assets/rods.jpg">
+          <div class="absolute-bottom text-caption text-center">
+            Rods
           </div>
         </q-img>
       </q-card>
 
       <q-card class="my-card col-sm-3 q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
+        <q-img src="~/assets/cement.jpg">
+          <div class="absolute-bottom text-caption text-center">
+            Cement
           </div>
         </q-img>
       </q-card>
 
       <q-card class="my-card col-sm-3 q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
+        <q-img src="~/assets/sand.jpg">
+          <div class="absolute-bottom text-caption text-center">
+            Sand
           </div>
         </q-img>
       </q-card>
 
       <q-card class="my-card col-sm-3 q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
+        <q-img src="~/assets/stones.jpg">
+          <div class="absolute-bottom text-caption text-center">
+            Stone
           </div>
         </q-img>
       </q-card>
@@ -52,42 +52,37 @@
     </div>
 
     <div class="row justify-start">
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
-        </q-img>
+      <q-card class="my-card-articles q-ma-sm">
+        <img src="https://cdn.quasar.dev/img/mountains.jpg">
+
+      <q-card-section>
+        <div class="text-h6">Our Changing Planet</div>
+        <div class="text-subtitle2">by John Doe</div>
+      </q-card-section>
       </q-card>
 
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
-        </q-img>
+      <q-card class="my-card-articles q-ma-sm">
+        <img src="https://cdn.quasar.dev/img/mountains.jpg">
+
+      <q-card-section>
+        <div class="text-h6">Our Changing Planet</div>
+        <div class="text-subtitle2">by John Doe</div>
+      </q-card-section>
       </q-card>
 
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
-        </q-img>
+      <q-card class="my-card-articles q-ma-sm">
+        <img src="https://cdn.quasar.dev/img/mountains.jpg">
+
+      <q-card-section>
+        <div class="text-h6">Our Changing Planet</div>
+        <div class="text-subtitle2">by John Doe</div>
+      </q-card-section>
       </q-card>
-
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
-        </q-img>
-      </q-card>
-
-
 
     </div>
-
+    <div right class="more q-pa-sm">
+      see all
+    </div>
 
 
     <div class="subtitle q-pa-sm">
@@ -214,11 +209,36 @@ export default {
   color: grey
 
 .my-card
-  height: 60px
+  height: 70px
   width: 70px
 
   .text-h3
     font-size: 14px
+
+.my-card-articles
+  margin-bottom: 20px
+  height: 135px
+  width: 100px
+
+  .q-card__section
+    background: #e52929
+  .text-h6
+    color: white
+    font-size: 12px
+    line-height: 14px
+    font-family: 'Koulen'
+
+  .text-subtitle2
+    color: rgba(255, 255, 255, 0.8)
+    font-family: 'Lobster'
+    font-size: 12px
+
+.more
+  display: flex
+  flex-direction: row
+  justify-content: right
+  margin-right: 10px
+  font-size: 14px
 
 .cont
   background: white

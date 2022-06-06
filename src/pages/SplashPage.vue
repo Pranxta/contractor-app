@@ -6,14 +6,14 @@
         <span id="second">{{last}}</span>
       </h3>
       <q-btn label="Sign Up" type="submit" color="grey"/>
-      <q-btn label="Log in" type="submit" color="primary" class="q-ml-sm" />
+      <q-btn to="/login" label="Log in" type="submit" color="primary" class="q-ml-sm" />
     </div>
   </q-page>
 </template>
 
 <script>
 import env from './Env.js'
-import { useQuasar, QSpinnerFacebook  } from 'quasar'
+import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
 
 
@@ -89,5 +89,8 @@ h3
   background: grey
   min-width: 800px
 
+.q-btn
+  margin: 0 auto
+  width: 200px
 
 </style>

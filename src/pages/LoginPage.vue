@@ -8,8 +8,6 @@
       </h3>
 
       <q-form
-        @submit="onSubmit"
-        @reset="onReset"
         class="q-gutter-sm"
       >
         <h4>Log In</h4>
@@ -17,7 +15,9 @@
         <q-input
           class="login-input"
           filled
+
           v-model="tel"
+          mask="###-####-####"
           label="Phone Number *"
           hint="Registered phone number that was used to sign up"
           lazy-rules
@@ -35,73 +35,113 @@
         />
 
 
-        <div class="flex-container">
-          <q-btn label="Sign Up" type="submit" color="primary"/>
+        <div class="text-center">
+          <q-btn label="Login" @click="submitLogin" color="primary"/>
         </div>
+
+
       </q-form>
+
+      <div class="err-msg text-center">
+        <span class="text-subtitle2">
+          {{message}}
+        </span>
+      </div>
+
     </div>
+
 
   </q-page>
 </template>
 
 <script>
 import env from './Env.js'
+import axios from 'axios'
 import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
+import { useRouter } from 'vue-router'
 
 
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
 
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
+    const tel = ref(null)
+    const password = ref(null)
+    const message = ref(null)
 
-    onMounted( () => {
-      $q.loading.show({
+    const router = useRouter()
 
-        spinnerColor: 'red',
-        spinnerSize: 240,
-        backgroundColor: 'burgundy',
-        message: 'Confirming...',
-        messageColor: 'white'
-      })
+    function submitLogin () {
 
-      // hiding in 3s
-      timer = setTimeout(() => {
-        $q.loading.hide()
-        timer = void 0
-      }, 3000)
+      if (tel.value == null || password.value == null || tel.value.length <11 || password.value.length == 0 ) {
+        console.log("tel and pass empty")
+        return
+      }
 
+
+    $q.loading.show({
+
+      spinnerColor: 'red',
+      spinnerSize: 240,
+      backgroundColor: 'burgundy',
+      message: 'Confirming...',
+      messageColor: 'white'
     })
+
+      tel.value = tel.value.replace(/-/g,"")
+
+      // console.log(env.BASE_URL + "users/login")
+
+      const payload = {
+        phone: tel.value,
+        password: password.value
+      }
+      console.log(payload)
+      const url = env.BASE_URL + "users/login"
+      axios.post(url, payload)
+      .then(
+        resp => {
+          message.value = "Successfully Logged In"
+          $q.loading.hide()
+          router.push('/home')
+        }
+      ).catch(
+        error => {
+          $q.loading.hide()
+          tel.value = ""
+          password.value = ""
+          message.value = "Login Unsuccessful. Please make sure your login credentials are correct or contact support"
+
+        }
+      )
+    }
+
+    // onMounted( () => {
+    //   $q.loading.show({
+
+    //     spinnerColor: 'red',
+    //     spinnerSize: 240,
+    //     backgroundColor: 'burgundy',
+    //     message: 'Confirming...',
+    //     messageColor: 'white'
+    //   })
+
+    //   // hiding in 3s
+    //   timer = setTimeout(() => {
+    //     $q.loading.hide()
+    //     timer = void 0
+    //   }, 3000)
+
+    // })
 
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
-      name,
-      age,
-      accept,
-
-      onSubmit () {
-        if (accept.value !== true) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
-        }
-        else {
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Submitted'
-          })
-        }
-      },
+      tel,
+      password,
+      submitLogin,
+      message,
 
       onReset () {
         name.value = null
@@ -129,7 +169,7 @@ export default {
   height: 100vh
 
 .signup
-  margin-top: 100px
+  margin-top: 150px
   width: 90vw
 
   button
@@ -154,6 +194,11 @@ export default {
   background: grey
   min-width: 800px
 
+
+.err-msg
+  height: 100px
+  margin: 100px auto
+  padding: 0px
 
 #second
   font-family: 'Koulen', cursive

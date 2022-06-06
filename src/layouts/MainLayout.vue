@@ -16,6 +16,18 @@
         </q-toolbar-title>
 
         <div>
+
+
+           <q-btn
+            id="search"
+            flat
+            dark
+            icon-right="shopping_cart"
+          >
+          <q-badge color="green" floating>{{1}}</q-badge>
+          </q-btn>
+
+
           <q-btn
             id="search"
             flat
@@ -23,6 +35,8 @@
             icon-right="search"
           >
           </q-btn>
+
+
         </div>
 
       </q-toolbar>

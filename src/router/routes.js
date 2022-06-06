@@ -37,12 +37,32 @@ const routes = [
   },
 
   {
-    path: '/home',
+    path: '/home/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('src/pages/HomePage.vue')
+      },
+      {
+        path: 'brand',
+        component: () => import('src/pages/BrandPage.vue')
+      },
+      {
+        path: 'products',
+        component: () => import('src/pages/ProductsPage.vue')
+      },
+      {
+        path: 'singleproduct',
+        component: () => import('src/pages/SingleProductPage.vue')
+      },
+      {
+        path: 'checkout',
+        component: () => import('src/pages/CheckoutPage.vue')
+      },
+      {
+        path: 'calculatorone',
+        component: () => import('src/pages/CalculatorOnePage.vue')
       }
     ]
   },
