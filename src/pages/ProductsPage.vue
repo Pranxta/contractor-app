@@ -10,7 +10,7 @@
     <div class="col">
 
 
-      <div class="product">
+      <div v-for="(product, key) in products" class="product">
 
         <div class="prod-name row">
           <div class="float-left col">
@@ -18,13 +18,16 @@
           </div>
 
           <div class="col prod-d float-right">
-            <h5>Product Name</h5>
-            <span>product details go here</span>
+            <h5>{{product.name}}</h5>
+            <span>{{product.description}}</span>
+            <br>
+            <span>sub-categories:{{product.SubcatName}}</span>
+            <span>{{product.description}}</span>
             <br>
             <span class="text-weight-bolder">Price: </span>
-            <span>BDT 45 /tonne</span>
+            <span>BDT {{" /" + product.unit}}</span>
             <br>
-            <span>(minimum: 3 tonnes)</span>
+            <span>minimum: {{product.min_unit + " " + product.unit}}</span>
           </div>
 
         </div>
@@ -51,19 +54,24 @@
 import env from './Env.js'
 import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
+import { useRoute } from 'vue-router'
 
+import axios from 'axios'
 
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
-
+    const route = useRoute()
     $q.dark.set(false)
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
+
+    const products = ref([])
 
     onMounted( () => {
+
+      const brand = route.params.brand
+
+      // console.log(brand)
+
       $q.loading.show({
 
         spinnerColor: 'red',
@@ -73,21 +81,32 @@ export default {
         messageColor: 'white'
       })
 
+      const url = env.BASE_URL + "products"
+      axios.get(url)
+      .then(
+        resp => {
+          products.value = resp.data
+          console.log(products.value)
+          $q.loading.hide()
+        }
+      ).catch(
+        err => console.log(err)
+      )
+
       // hiding in 3s
-      timer = setTimeout(() => {
-        $q.loading.hide()
-        timer = void 0
-      }, 3000)
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
 
     })
 
     return {
-      model: ref(10),
+
       first: env.appNameFirst,
       last: env.appNameLast,
-      name,
-      age,
-      accept
+      products
+
     }
   }
 }

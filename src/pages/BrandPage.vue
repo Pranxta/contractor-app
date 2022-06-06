@@ -105,16 +105,15 @@
 import env from './Env.js'
 import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
+import { useRoute } from 'vue-router'
 
+import axios from 'axios'
 
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
-
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
+    const route = useRoute()
+    const products = ref([])
 
     onMounted( () => {
       $q.loading.show({
@@ -126,45 +125,30 @@ export default {
         messageColor: 'white'
       })
 
+      const url = env.BASE_URL + "products"
+      axios.get(url)
+      .then(
+        resp => {
+          products.value = resp.data
+          console.log(products.value)
+          $q.loading.hide()
+        }
+      ).catch(
+        err => console.log(err)
+      )
+
       // hiding in 3s
-      timer = setTimeout(() => {
-        $q.loading.hide()
-        timer = void 0
-      }, 3000)
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
 
     })
 
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
-      name,
-      age,
-      accept,
 
-      onSubmit () {
-        if (accept.value !== true) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
-        }
-        else {
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Submitted'
-          })
-        }
-      },
-
-      onReset () {
-        name.value = null
-        age.value = null
-        accept.value = false
-      }
     }
   }
 }

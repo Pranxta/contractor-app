@@ -45,11 +45,11 @@ const routes = [
         component: () => import('src/pages/HomePage.vue')
       },
       {
-        path: 'brand',
+        path: 'brands',
         component: () => import('src/pages/BrandPage.vue')
       },
       {
-        path: 'products',
+        path: 'products/:brand',
         component: () => import('src/pages/ProductsPage.vue')
       },
       {

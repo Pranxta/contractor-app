@@ -143,11 +143,11 @@ export default {
       submitLogin,
       message,
 
-      onReset () {
-        name.value = null
-        age.value = null
-        accept.value = false
-      }
+      // onReset () {
+      //   name.value = null
+      //   age.value = null
+      //   accept.value = false
+      // }
     }
   }
 }

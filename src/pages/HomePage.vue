@@ -8,9 +8,9 @@
 
 
     <div class="row justify-evenly">
-      <q-card class="my-card col-sm-3 q-ma-sm">
+      <q-card @click="viewRods" class="my-card col-sm-3 q-ma-sm">
         <q-img src="~/assets/rods.jpg">
-          <div class="absolute-bottom text-caption text-center">
+          <div  class="absolute-bottom text-caption text-center">
             Rods
           </div>
         </q-img>
@@ -135,6 +135,8 @@
 import env from './Env.js'
 import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 
 export default {
@@ -145,6 +147,8 @@ export default {
     const name = ref(null)
     const age = ref(null)
     const accept = ref(false)
+
+    const router = useRouter()
 
     onMounted( () => {
       $q.loading.show({
@@ -164,37 +168,38 @@ export default {
 
     })
 
+    function viewRods () {
+      router.push('/home/products/rods')
+    }
+
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
       name,
       age,
       accept,
+      viewRods
 
-      onSubmit () {
-        if (accept.value !== true) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
-        }
-        else {
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Submitted'
-          })
-        }
-      },
+      // onSubmit () {
+      //   if (accept.value !== true) {
+      //     $q.notify({
+      //       color: 'red-5',
+      //       textColor: 'white',
+      //       icon: 'warning',
+      //       message: 'You need to accept the license and terms first'
+      //     })
+      //   }
+      //   else {
+      //     $q.notify({
+      //       color: 'green-4',
+      //       textColor: 'white',
+      //       icon: 'cloud_done',
+      //       message: 'Submitted'
+      //     })
+      //   }
+      // },
 
-      onReset () {
-        name.value = null
-        age.value = null
-        accept.value = false
-      }
+
     }
   }
 }
