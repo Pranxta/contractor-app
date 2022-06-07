@@ -23,6 +23,7 @@
             flat
             dark
             icon-right="shopping_cart"
+            :to="'/home/checkout'"
           >
           <q-badge color="green" floating>{{store.getCart.length}}</q-badge>
           </q-btn>

@@ -10,23 +10,22 @@
     <div class="col">
 
 
-      <div class="product">
+      <div class="product" v-if="cart.items.length>0">
 
-        <div class="prod-name row">
+        <div class="prod-name row" v-for="(item,index) in cart.items">
           <div class="float-left col">
             <img class="prod-img" src="~/assets/rods.jpg">
           </div>
 
           <div class="col prod-d float-right">
 
-            <span class="text-weight-bolder">Product name</span>
+            <span class="text-weight-bolder">{{item.name}}</span>
             <br>
-            <span class="text-weight-medium">Brand Category</span>
+            <span class="text-weight-medium">{{item.price + " X " + item.quantity}}</span>
             <br>
-            <span class="text-weight-medium">BDT 45 </span> x 5 tonnes
-            <br>
+
             <span class="text-weight-bold">Subtotal: </span>
-            <span class="text-weight-medium">BDT 22,000 </span>
+            <span class="text-weight-medium">BDT {{item.price*item.quantity}}</span>
 
           </div>
         </div>
@@ -37,9 +36,9 @@
       <q-separator color="grey" />
 
 
-      <div class="total">
+      <div class="total" v-if="store.cart.length>0">
         <span class="text-weight-bolder">Grand Total: </span>
-        <span class="text-weight-bold">BDT 100,000</span>
+        <span class="text-weight-bold">BDT {{gTotal}}</span>
         <br>
         <span class="text-weight-bold">Total Items: </span>
         <span class="text-weight-bold"> 5 </span>
@@ -79,7 +78,7 @@
       </div>
 
 
-      <div class="col cart-col">
+      <div class="col cart-col" v-if="store.cart.length>0">
         <q-btn class="secondary q-ma-sm" color="primary">Proceed</q-btn>
         <q-btn class="secondaryq-ma-sm" color="red">cancel</q-btn>
       </div>
@@ -100,18 +99,21 @@
 <script>
 import env from './Env.js'
 import { useQuasar } from 'quasar'
-import { ref, onMounted  } from 'vue'
+import { ref, onMounted,reactive  } from 'vue'
+import { useCounterStore } from 'stores/cart_store'
 
 
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
+    const store = useCounterStore()
+    const gTotal = ref(0)
+    const cart = reactive({
+      items: []
+    })
 
     $q.dark.set(false)
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
+
 
     onMounted( () => {
       $q.loading.show({
@@ -123,21 +125,30 @@ export default {
         messageColor: 'white'
       })
 
+      cart.items = store.cart
+      console.log(cart)
+
+      cart.items.forEach(
+        el => {
+          gTotal.value += el.price*el.quantity
+        }
+      )
+      $q.loading.hide()
+
       // hiding in 3s
-      timer = setTimeout(() => {
-        $q.loading.hide()
-        timer = void 0
-      }, 3000)
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
 
     })
 
     return {
-      model: ref(10),
       first: env.appNameFirst,
       last: env.appNameLast,
-      name,
-      age,
-      accept
+      store,
+      cart,
+      gTotal
     }
   }
 }

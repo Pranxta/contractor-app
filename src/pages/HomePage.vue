@@ -90,41 +90,24 @@
       <q-separator color="grey" />
     </div>
 
-    <div class="row justify-start">
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
+    <div class="row justify-evenly tools text-center">
+      <q-card @click="goToCalculator" class="my-card col-sm-6 q-ma-sm">
+        <q-img src="~/assets/calculator-icon.png">
         </q-img>
+        <span class="text-subtitle">Cost Calculator</span>
       </q-card>
 
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
+      <q-card class="my-card col-sm-3 q-ma-sm">
+        <q-img src="~/assets/cal2.jpg">
         </q-img>
+        <span class="text-subtitle"> Calculator Tool</span>
       </q-card>
 
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
+      <q-card class="my-card col-sm-3 q-ma-sm">
+        <q-img src="~/assets/cal3.png">
         </q-img>
+        <span class="text-subtitle">Sample Tool No.3</span>
       </q-card>
-
-      <q-card class="my-card q-ma-sm">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-          <div class="absolute-bottom text-subtitle2 text-center">
-            Title
-          </div>
-        </q-img>
-      </q-card>
-
-
-
     </div>
 
 
@@ -142,11 +125,6 @@ import { useRouter } from 'vue-router'
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
-
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
 
     const router = useRouter()
 
@@ -161,24 +139,25 @@ export default {
       })
 
       // hiding in 3s
-      timer = setTimeout(() => {
-        $q.loading.hide()
-        timer = void 0
-      }, 3000)
-
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
+      $q.loading.hide()
     })
 
     function viewRods () {
       router.push('/home/brands/rods')
     }
+    function goToCalculator () {
+      router.push('/home/calculatorone')
+    }
 
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
-      name,
-      age,
-      accept,
-      viewRods
+      viewRods,
+      goToCalculator
 
       // onSubmit () {
       //   if (accept.value !== true) {
@@ -263,5 +242,15 @@ export default {
 
 .subtitle
   font-family: 'Koulen', cursive
+
+.tools
+  line-height: 1.2em
+
+  .text-subtitle
+
+    font-size: 12px
+    color: brown
+    font-weight: bold
+
 
 </style>
