@@ -10,9 +10,9 @@
     <div class="col">
 
 
-      <div v-for="(product, key) in products" class="product">
+      <div v-for="(product, index) in products" class="product" >
 
-        <div class="prod-name row">
+        <div class="prod-name row" @click="goToProduct(product.key)">
           <div class="float-left col">
             <img class="prod-img" src="~/assets/rods.jpg">
           </div>
@@ -58,7 +58,7 @@ import { ref, onMounted, reactive  } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import axios from 'axios'
-import func from 'vue-editor-bridge'
+
 
 export default {
   props: {
@@ -131,7 +131,8 @@ export default {
 
 
     function goToProduct (key) {
-      router.push("/home/singleproduct/")
+      console.log("clicked")
+      router.push("/home/singleproduct/"+key)
     }
 
     return {
