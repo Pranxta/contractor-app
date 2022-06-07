@@ -57,7 +57,7 @@
 <script>
 import env from './Env.js'
 import axios from 'axios'
-import { useQuasar } from 'quasar'
+import { useQuasar, LocalStorage } from 'quasar'
 import { ref, onMounted  } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -80,14 +80,14 @@ export default {
       }
 
 
-    $q.loading.show({
+      $q.loading.show({
 
-      spinnerColor: 'red',
-      spinnerSize: 240,
-      backgroundColor: 'burgundy',
-      message: 'Confirming...',
-      messageColor: 'white'
-    })
+        spinnerColor: 'red',
+        spinnerSize: 240,
+        backgroundColor: 'burgundy',
+        message: 'Confirming...',
+        messageColor: 'white'
+      })
 
       tel.value = tel.value.replace(/-/g,"")
 
@@ -97,12 +97,15 @@ export default {
         phone: tel.value,
         password: password.value
       }
-      console.log(payload)
       const url = env.BASE_URL + "users/login"
       axios.post(url, payload)
       .then(
         resp => {
           message.value = "Successfully Logged In"
+          $q.localStorage.set("user", resp.data.user)
+          //console.log("data",$q.localStorage.getItem("user"))
+          //getUserDetail(resp.data.token)
+
           $q.loading.hide()
           router.push('/home')
         }
@@ -111,9 +114,20 @@ export default {
           $q.loading.hide()
           tel.value = ""
           password.value = ""
+          console.log(error)
           message.value = "Login Unsuccessful. Please make sure your login credentials are correct or contact support"
 
         }
+      )
+    }
+
+    function getUserDetail (tokenString) {
+      url = env.BASE_URL + "users/details/"
+      axios.get(url, {token: tokenString})
+      .then(
+        res => console.log("details: ",res.data)
+      ).catch(
+        err => console.log(err)
       )
     }
 

@@ -2,7 +2,7 @@
   <q-page class="container">
 
     <div class="subtitle q-pa-sm">
-      Products
+      {{props.category}} > {{props.brand}} > Products
       <q-separator color="grey" />
     </div>
 
@@ -18,16 +18,15 @@
           </div>
 
           <div class="col prod-d float-right">
-            <h5>{{product.name}}</h5>
-            <span class="text-weight-medium">{{product.description}}</span>
+            <h5 class="text-h5">{{product.name}}</h5>
+            <span class="text-subtitle">{{product.description}}</span>
             <br>
-            <span>Category: {{product.catName}}</span>
+            <q-badge rounded color="orange" :label="product.catName" />
+
+            <q-badge rounded color="blue" :label="product.subcatName" />
             <br>
-            <span>sub-categories: {{product.subcatName}}</span>
-            <br>
-            <span class="text-weight-bolder">Price: </span>
-            <span>BDT {{" /" + product.unit}}</span>
-            <br>
+            <span class="pr text-weight-bolder">BDT {{" /" + product.unit}}</span>
+
             <span>minimum: {{product.min_unit + " " + product.unit}}</span>
           </div>
 
@@ -74,8 +73,10 @@ export default {
     onMounted( () => {
 
 
-      console.log(props.category)
-      console.log(props.brand)
+      let sortedProds = []
+
+      //console.log(props.category)
+      //console.log(props.brand)
       // console.log(brand)
 
       $q.loading.show({
@@ -89,13 +90,22 @@ export default {
 
       const url = env.BASE_URL + "products"
       axios.get(url)
-      .then(
-        resp => {
-          products.value = resp.data
-          console.log(products.value)
-          $q.loading.hide()
-        }
-      ).catch(
+      .then(resp => {
+        sortedProds = resp.data.filter( element => {
+          return (element.brandName == props.brand && element.catName == props.category)
+        })
+        //console.log(sortedProds)
+
+        sortedProds.forEach(element => {
+
+          let prices = getPrices(element.key)
+          console.log(prices)
+        })
+        $q.loading.hide()
+        products.value = sortedProds
+
+      })
+      .catch(
         err => console.log(err)
       )
 
@@ -107,11 +117,22 @@ export default {
 
     })
 
+
+    function getPrices (key) {
+      axios.get(env.BASE_URL + "prices/prod/" + key)
+      .then(
+        res => console.log(res.data)
+      ).catch(
+        err => console.log(err)
+      )
+    }
+
     return {
 
       first: env.appNameFirst,
       last: env.appNameLast,
-      products
+      products,
+      props
 
     }
   }
@@ -125,6 +146,17 @@ export default {
 
 *
   color: grey
+
+.pr
+  color: orange
+  display: block
+  border: 1px solid orange
+  border-radius: 5px
+  margin: 5px auto
+  padding: 5px 10px
+
+.q-badge
+  color: white
 h5
   margin: 5px -5px
   padding: 5px
