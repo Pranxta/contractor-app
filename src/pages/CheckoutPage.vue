@@ -2,7 +2,7 @@
   <q-page class="container">
 
     <div class="subtitle q-pa-sm">
-      Category Name > Brand Name > Products
+      Cart > Checkout
       <q-separator color="grey" />
     </div>
 

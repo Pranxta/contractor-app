@@ -249,7 +249,7 @@ export default {
       timer = setTimeout(() => {
         $q.loading.hide()
         timer = void 0
-      }, 3000)
+      }, 1000)
 
     })
 

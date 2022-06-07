@@ -1,7 +1,7 @@
 <template>
   <q-page class="container">
 
-    <q-card class="my-card">
+    <q-card v-if="profile.details.name" class="my-card">
       <div class="avatar">
         <img class="" src="~/assets/avatar.png">
       </div>
@@ -14,8 +14,8 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Username Here</q-item-label>
-            <q-item-label caption>user type</q-item-label>
+            <q-item-label>{{profile.details.name}}</q-item-label>
+            <q-item-label caption>{{profile.details.type}}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -25,8 +25,8 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>01778 778 011</q-item-label>
-            <q-item-label caption>email@something.com</q-item-label>
+            <q-item-label>{{profile.details.phone}}</q-item-label>
+            <q-item-label caption>{{profile.details.email}}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -38,15 +38,15 @@
         <q-item-section>
 
           <q-item-label caption>address</q-item-label>
-          <q-item-label>address line 1 goes here</q-item-label>
+          <q-item-label>{{profile.details.address}}</q-item-label>
         </q-item-section>
       </q-item>
       </q-list>
     </q-card>
 
-    <div class="balance">
-      <q-btn color="brown-5" label="Check Balance" />
-      <q-badge outline color="primary" label="BDT 24000" />
+    <div v-if="profile.details.name" class="balance">
+      <q-btn @click="reload" color="brown-5" label="Check Balance" />
+      <q-badge outline color="primary" :label="'BDT ' + profile.details.balance" />
     </div>
 
 
@@ -77,12 +77,9 @@ export default {
     const router = useRouter()
     const store = useCounterStore()
 
-    const uType = ref(null)
-    const confirm = ref(false)
-    const ack = ref(false)
-
-    const quant = ref(0)
-
+    const profile = reactive({
+      details: {}
+    })
 
     $q.dark.set(false)
     const product = reactive({
@@ -91,54 +88,42 @@ export default {
     })
 
     onMounted( () => {
-      // $q.loading.show({
+      $q.loading.show({
 
-      //   spinnerColor: 'red',
-      //   spinnerSize: 240,
-      //   backgroundColor: 'burgundy',
-      //   message: 'Loading...',
-      //   messageColor: 'white'
-      // })
+        spinnerColor: 'red',
+        spinnerSize: 240,
+        backgroundColor: 'burgundy',
+        message: 'Loading...',
+        messageColor: 'white'
+      })
 
-      // let xuser = $q.localStorage.getItem("user")
-      // uType.value = xuser.type
-      // const promise1 = axios.get(env.BASE_URL + "products/" + route.params.id)
-      // const promise2 = axios.get(env.BASE_URL + "prices/prod/" + route.params.id)
-
-      // Promise.all([promise1,promise2])
-      // .then(
-      //   responses => {
-      //     product.details = responses[0].data
-      //     product.details.img_url = env.IMG_BASE_URL + product.details.image
-
-      //     let xprice = responses[1].data
-      //     if(uType.value == "sme")
-      //       product.price = xprice.sme_price
-      //     else if(uType.value == "landlord")
-      //       product.price = xprice.landlord_price
-      //     else
-      //       product.price = xprice.contractor_price
-
-      //     quant.value = product.details.min_unit
-      //     console.log(product)
-      //     $q.loading.hide()
-      //   }
-      // )
-
-      // hiding in 3s
-      // timer = setTimeout(() => {
-      //   $q.loading.hide()
-      //   timer = void 0
-      // }, 3000)
+      let user =$q.localStorage.getItem("user")
+      axios.get(env.BASE_URL + "users/"+user.key)
+      .then(
+        res => {
+          profile.details =res.data
+          $q.loading.hide()
+        }
+      )
+      .catch(
+        err => {
+          console.log(err)
+          $q.loading.hide()
+        }
+      )
 
     })
 
-
+    function reload () {
+      router.go()
+    }
 
     return {
 
       first: env.appNameFirst,
       last: env.appNameLast,
+      profile,
+      reload
 
     }
   }

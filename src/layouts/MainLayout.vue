@@ -91,40 +91,40 @@ const linksList = [
     link: '#/home'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'products',
+    caption: 'all avilable products',
+    icon: 'inventory',
+    link: '#/home'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: 'tools',
+    caption: 'tools to help you',
+    icon: 'square_foot',
+    link: '#/home/calculatorone'
   },
   {
     title: 'Forum',
     caption: 'forum.quasar.dev',
     icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    link: '#/home'
   },
   {
     title: 'Twitter',
-    caption: '@quasarframework',
+    caption: '@pocketcontractor',
     icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    link: '#/home'
   },
   {
     title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
+    caption: '@pocketcontractor',
+    icon: 'favorite',
+    link: '#/home'
   },
   {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'website',
+    caption: 'info about us',
+    icon: 'public',
+    link: '#/home'
   }
 ]
 
@@ -159,6 +159,9 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap')
 
+.q-drawer
+  color: white
+  background: black
 #second
   font-family: 'Koulen', cursive
   color: rgba(beige , 0.7 )
