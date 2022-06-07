@@ -17,14 +17,17 @@ const routes = [
         component: () => import('pages/LoginPage.vue')
       },
       {
+        name: "landlord",
         path: 'signupLand',
         component: () => import('src/pages/SignupLandlordPage.vue')
       },
       {
+        name: "contractor",
         path: 'signupContractor',
         component: () => import('src/pages/SignupContractorPage.vue')
       },
       {
+        name: "sme",
         path: 'signupSme',
         component: () => import('src/pages/SignupSmePage.vue')
       },

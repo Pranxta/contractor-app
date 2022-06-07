@@ -15,7 +15,7 @@
         <q-radio dense v-model="type" val="contractor" checked-icon="task_alt" label="contractor" />
         <q-radio dense v-model="type" val="sme" checked-icon="task_alt" label="SME" />
       </div>
-      <q-btn label="Next" type="submit" color="primary"/>
+      <q-btn @click="selectType" label="Next" color="primary"/>
     </div>
   </q-page>
 </template>
@@ -23,12 +23,17 @@
 <script>
 import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
+import { useRouter } from 'vue-router'
 
 
 export default {
   setup () {
 
     const $q = useQuasar()
+    const router = useRouter()
+
+    const type = ref("")
+
     let timer
 
     onMounted( () => {
@@ -45,11 +50,23 @@ export default {
       timer = setTimeout(() => {
         $q.loading.hide()
         timer = void 0
-      }, 3000)
+      }, 1000)
 
     })
+
+    function selectType () {
+      console.log(type.value)
+      if(type.value == "landlord")
+        router.push({name: "landlord"})
+      else if(type.value == "contractor")
+        router.push({name: "contractor"})
+      else
+        router.push({name: "sme"})
+    }
     return {
-      type: ref('landlord')
+      type: ref('landlord'),
+      type,
+      selectType
     }
   }
 }

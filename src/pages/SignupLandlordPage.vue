@@ -3,8 +3,6 @@
 
     <div class="signup">
       <q-form
-        @submit="onSubmit"
-        @reset="onReset"
         class="q-gutter-sm"
       >
         <h4>Sign Up</h4>
@@ -12,7 +10,7 @@
         <q-input
           class="login-input"
           filled
-          v-model="name"
+          v-model="user.name"
           label="name *"
           hint="Name and surname"
           lazy-rules
@@ -23,7 +21,7 @@
           class="login-input"
           filled
           type="email"
-          v-model="email"
+          v-model="user.email"
           label="email address"
           hint="has to be a valid email address"
           lazy-rules
@@ -33,7 +31,7 @@
           class="login-input"
           filled
           type="tel"
-          v-model="phone"
+          v-model="user.phone"
           label="phone number"
           hint="start with +8801"
           lazy-rules
@@ -43,7 +41,7 @@
           class="login-input"
           filled
           type="text"
-          v-model="address"
+          v-model="add1"
           label="address"
           hint="enter your billing address"
           lazy-rules
@@ -53,7 +51,7 @@
           class="login-input"
           filled
           type="text"
-          v-model="address2"
+          v-model="add2"
           label="address line 2"
           hint="leave empty if not needed"
           lazy-rules
@@ -63,7 +61,7 @@
           class="login-input"
           filled
           type="text"
-          v-model="NID"
+          v-model="user.nid"
           label="nid number"
           hint="your NID number"
           lazy-rules
@@ -72,7 +70,7 @@
 
 
         <div class="flex-container">
-          <q-btn label="Sign Up" type="submit" color="primary"/>
+          <q-btn @click="signup" label="Sign Up" color="primary"/>
           <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm" />
         </div>
       </q-form>
@@ -84,7 +82,10 @@
 <script>
 
 import { useQuasar, QSpinnerFacebook  } from 'quasar'
-import { ref, onMounted  } from 'vue'
+import { ref, onMounted, reactive  } from 'vue'
+import axios from 'axios'
+import Env from './Env'
+
 
 
 export default {
@@ -92,9 +93,17 @@ export default {
     const $q = useQuasar()
     let timer
 
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
+    const add1 = ref("")
+    const add2 = ref("")
+    const user = reactive({
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      nid: "",
+      type: "landlord"
+    })
+
 
     onMounted( () => {
       $q.loading.show({
@@ -110,38 +119,44 @@ export default {
       timer = setTimeout(() => {
         $q.loading.hide()
         timer = void 0
-      }, 3000)
+      }, 1000)
 
     })
 
-    return {
-      name,
-      age,
-      accept,
+    function signup () {
+      $q.loading.show()
+      if(add2.value !== "" || add2.value !== null)
+      user.address = add1.value + " " + add2.value
 
-      onSubmit () {
-        if (accept.value !== true) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
+      axios.post(Env.BASE_URL + "users/", user)
+      .then(
+        res => {
+          console.log(res.data)
+          $q.loading.hide()
         }
-        else {
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Submitted'
-          })
+      )
+      .catch(
+        err=> {
+          console.log(err)
+          $q.loading.hide()
         }
-      },
+      )
+
+    }
+
+    return {
+      user,
+      add1,
+      add2,
+      signup,
 
       onReset () {
-        name.value = null
-        age.value = null
-        accept.value = false
+        user.name = null
+        user.phone = null
+        user.email = null
+        user.name = null
+        add1.value = null
+        add2.value = null
       }
     }
   }

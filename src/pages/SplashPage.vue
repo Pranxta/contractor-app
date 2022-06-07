@@ -5,7 +5,7 @@
         <span id="first">{{first}}</span>
         <span id="second">{{last}}</span>
       </h3>
-      <q-btn label="Sign Up" type="submit" color="grey"/>
+      <q-btn to="/select" label="Sign Up" type="submit" color="grey"/>
       <q-btn to="/login" label="Log in" type="submit" color="primary" class="q-ml-sm" />
     </div>
   </q-page>
