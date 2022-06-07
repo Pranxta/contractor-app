@@ -78,10 +78,10 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Home',
+    caption: 'main page',
+    icon: 'home',
+    link: '#/home'
   },
   {
     title: 'Github',

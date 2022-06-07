@@ -23,20 +23,20 @@ export default ({
     let timer
 
     onMounted( () => {
-      $q.loading.show({
+      // $q.loading.show({
 
-        spinnerColor: 'red',
-        spinnerSize: 240,
-        backgroundColor: 'burgundy',
-        message: 'Loading...',
-        messageColor: 'black'
-      })
+      //   spinnerColor: 'red',
+      //   spinnerSize: 240,
+      //   backgroundColor: 'burgundy',
+      //   message: 'Loading...',
+      //   messageColor: 'black'
+      // })
 
-      // hiding in 3s
-      timer = setTimeout(() => {
-        $q.loading.hide()
-        timer = void 0
-      }, 3000)
+      // // hiding in 3s
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
 
     })
 

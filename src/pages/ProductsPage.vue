@@ -2,7 +2,7 @@
   <q-page class="container">
 
     <div class="subtitle q-pa-sm">
-      Category Name > Brand Name > Products
+      Products
       <q-separator color="grey" />
     </div>
 
@@ -19,10 +19,11 @@
 
           <div class="col prod-d float-right">
             <h5>{{product.name}}</h5>
-            <span>{{product.description}}</span>
+            <span class="text-weight-medium">{{product.description}}</span>
             <br>
-            <span>sub-categories:{{product.SubcatName}}</span>
-            <span>{{product.description}}</span>
+            <span>Category: {{product.catName}}</span>
+            <br>
+            <span>sub-categories: {{product.subcatName}}</span>
             <br>
             <span class="text-weight-bolder">Price: </span>
             <span>BDT {{" /" + product.unit}}</span>
@@ -59,7 +60,11 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 
 export default {
-  setup () {
+  props: {
+    category: String,
+    brand: String
+  },
+  setup (props) {
     const $q = useQuasar()
     const route = useRoute()
     $q.dark.set(false)
@@ -68,8 +73,9 @@ export default {
 
     onMounted( () => {
 
-      const brand = route.params.brand
 
+      console.log(props.category)
+      console.log(props.brand)
       // console.log(brand)
 
       $q.loading.show({

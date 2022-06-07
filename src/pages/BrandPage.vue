@@ -9,8 +9,8 @@
 
     <div class="col">
 
-      <div>
-        <div v-for="brand in allBrands" class="brand row">
+      <div v-for="brand in allBrands" >
+        <div class="brand">
 
           <div class="float-left brand-img col">
             <img class="prod-img" src="~/assets/rods.jpg">
@@ -23,13 +23,16 @@
               {{brand.description}}
             </span>
             <br>
-            <q-btn color="primary">
+            <q-btn color="primary" @click="toCatBrand(brand.name)">
               view products
             </q-btn>
           </div>
-          <div class="subtitle col q-pa-sm">
-            <q-separator color="grey" />
+
+          <div class="sepr text-center">
+            <q-separator color="grey"/>
           </div>
+
+
         </div>
 
 
@@ -55,7 +58,7 @@
 import env from './Env.js'
 import { useQuasar } from 'quasar'
 import { ref, onMounted  } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import axios from 'axios'
 
@@ -63,10 +66,12 @@ export default {
   setup () {
     const $q = useQuasar()
     const route = useRoute()
+    const router = useRouter()
     const cat = ref("")
     const allBrands = ref([])
 
     onMounted( () => {
+
       $q.loading.show({
 
         spinnerColor: 'red',
@@ -80,8 +85,7 @@ export default {
       let brands = []
       let filteredBrands = []
 
-      const category = route.params.cat
-      cat.value = category
+      cat.value = route.params.cat
 
       const url = env.BASE_URL + "products/"
 
@@ -94,7 +98,7 @@ export default {
             brands.push(element.brand)
           })
           filteredBrands = [...new Set(brands)]
-          console.log("filteredBrands: ",filteredBrands)
+          // console.log("filteredBrands: ",filteredBrands)
           getBrands(filteredBrands)
         }
       )
@@ -116,7 +120,8 @@ export default {
         axios.get(env.BASE_URL+"brands/"+el)
         .then(res => {
           allBrands.value.push(res.data)
-          console.log("brands:",res.data)
+          // console.log("brands:",res.data)
+          $q.loading.hide()
         })
         .catch(
           err => console.log(err)
@@ -124,11 +129,17 @@ export default {
       })
     }
 
+    function toCatBrand (brnd) {
+
+      router.push({name:"brandCat", params: { category: route.params.cat, brand: brnd }})
+    }
+
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
       cat,
-      allBrands
+      allBrands,
+      toCatBrand
 
     }
   }
@@ -145,8 +156,7 @@ export default {
   background-color: white
 
 .brand-img
-  min-width: 80px
-  width: 120px
+  width: 20vw
   margin: 20px
 
   img
@@ -156,8 +166,7 @@ export default {
     border-radius: 10px
 
 .brand-text
-  min-width: 130px
-  width: 180px
+
   margin: 10px 30px
 
   button
@@ -174,5 +183,12 @@ export default {
 
 .subtitle
   font-family: 'Koulen', cursive
+
+
+.sepr
+  height: 100px
+  width: 80vw
+  clear: both
+  margin: 0 auto
 
 </style>
