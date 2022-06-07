@@ -25,7 +25,7 @@
             icon-right="shopping_cart"
             :to="'/home/checkout'"
           >
-          <q-badge color="green" floating>{{store.getCart.length}}</q-badge>
+          <q-badge v-if="store.getCart.length >0" color="green" floating>{{store.getCart.length}}</q-badge>
           </q-btn>
 
 
@@ -78,6 +78,12 @@ import { useCounterStore } from 'stores/cart_store'
 
 
 const linksList = [
+  {
+    title: 'Profile',
+    caption: 'check balance',
+    icon: 'account_circle',
+    link: '#/home/profile'
+  },
   {
     title: 'Home',
     caption: 'main page',

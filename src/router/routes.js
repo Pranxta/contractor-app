@@ -65,6 +65,10 @@ const routes = [
       {
         path: 'calculatorone',
         component: () => import('src/pages/CalculatorOnePage.vue')
+      },
+      {
+        path: 'profile',
+        component: () => import('src/pages/ProfilePage.vue')
       }
     ]
   },
