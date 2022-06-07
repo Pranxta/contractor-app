@@ -55,7 +55,7 @@ const routes = [
         props: true
       },
       {
-        path: 'singleproduct',
+        path: 'singleproduct/:id',
         component: () => import('src/pages/SingleProductPage.vue')
       },
       {

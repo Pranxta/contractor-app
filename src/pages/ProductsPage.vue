@@ -25,18 +25,19 @@
 
             <q-badge rounded color="blue" :label="product.subcatName" />
             <br>
-            <span class="pr text-weight-bolder">BDT {{" /" + product.unit}}</span>
+            <span class="pr text-weight-bolder">BDT {{product.price +" /" + product.unit}}</span>
 
             <span>minimum: {{product.min_unit + " " + product.unit}}</span>
           </div>
 
         </div>
 
+        <div class="subtitle q-pa-sm">
+          <q-separator color="grey" />
+        </div>
       </div>
 
-      <div class="subtitle q-pa-sm">
-        <q-separator color="grey" />
-      </div>
+
 
     </div>
 
@@ -52,29 +53,32 @@
 
 <script>
 import env from './Env.js'
-import { useQuasar } from 'quasar'
-import { ref, onMounted  } from 'vue'
-import { useRoute } from 'vue-router'
+import { useQuasar,LocalStorage } from 'quasar'
+import { ref, onMounted, reactive  } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import axios from 'axios'
+import func from 'vue-editor-bridge'
 
 export default {
   props: {
     category: String,
     brand: String
   },
+
   setup (props) {
     const $q = useQuasar()
     const route = useRoute()
+    const router = useRouter()
     $q.dark.set(false)
 
+
+
     const products = ref([])
+    const allPrices = ref([])
+    const userType = ref(null)
 
-    onMounted( () => {
-
-
-      let sortedProds = []
-
+    onMounted( async () => {
       //console.log(props.category)
       //console.log(props.brand)
       // console.log(brand)
@@ -88,43 +92,46 @@ export default {
         messageColor: 'white'
       })
 
-      const url = env.BASE_URL + "products"
-      axios.get(url)
-      .then(resp => {
-        sortedProds = resp.data.filter( element => {
-          return (element.brandName == props.brand && element.catName == props.category)
-        })
-        //console.log(sortedProds)
+      let xuser = $q.localStorage.getItem("user")
+      userType.value = xuser.type
+      const promise1 = axios.get(env.BASE_URL + "products")
+      const promise2 = axios.get(env.BASE_URL + "prices")
 
-        sortedProds.forEach(element => {
+      Promise.all([promise1,promise2])
+      .then(responses => {
 
-          let prices = getPrices(element.key)
-          console.log(prices)
-        })
+        products.value = responses[0].data.filter( el => (el.brandName == props.brand && el.catName == props.category))
+        allPrices.value = responses[1].data
+        console.log(products.value)
+        console.log(allPrices.value)
+
+        products.value.forEach(
+          (el) => {
+            let xprices = allPrices.value.find(
+              (cell) => {
+                return cell.owner == el.key
+              }
+            )
+
+            if(userType == "sme")
+              el.price = xprices.sme_price
+            else if( userType == "landlord")
+              el.price = xprices.landlord_price
+            else
+              el.price = xprices.contractor_price
+          }
+        )
+
         $q.loading.hide()
-        products.value = sortedProds
-
       })
-      .catch(
-        err => console.log(err)
-      )
+      .catch(err => console.log(err))
 
-      // hiding in 3s
-      // timer = setTimeout(() => {
-      //   $q.loading.hide()
-      //   timer = void 0
-      // }, 3000)
 
     })
 
 
-    function getPrices (key) {
-      axios.get(env.BASE_URL + "prices/prod/" + key)
-      .then(
-        res => console.log(res.data)
-      ).catch(
-        err => console.log(err)
-      )
+    function goToProduct (key) {
+      router.push("/home/singleproduct/")
     }
 
     return {
@@ -132,6 +139,9 @@ export default {
       first: env.appNameFirst,
       last: env.appNameLast,
       products,
+      allPrices,
+      userType,
+      goToProduct,
       props
 
     }
@@ -150,6 +160,7 @@ export default {
 .pr
   color: orange
   display: block
+  text-align: center
   border: 1px solid orange
   border-radius: 5px
   margin: 5px auto
