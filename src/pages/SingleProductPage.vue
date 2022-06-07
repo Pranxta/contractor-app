@@ -14,7 +14,7 @@
 
         <div class="prod-name row">
           <div class="float-left col">
-            <img class="prod-img" src="~/assets/rods.jpg">
+            <img class="prod-img" :src="product.details.img_url">
           </div>
 
           <div class="col prod-d float-right">
@@ -99,6 +99,23 @@
     </q-dialog>
 
 
+    <q-dialog v-model="ack" persistent>
+      <q-card>
+        <q-card-section class=" items-center">
+          <div class="row dialg">
+            <span class="qr text-weight-medium text-center text-green">Successfully added to cart</span>
+          </div>
+
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+
 
   </q-page>
 </template>
@@ -108,6 +125,7 @@ import env from './Env.js'
 import { useQuasar,LocalStorage } from 'quasar'
 import { ref, onMounted,reactive  } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useCounterStore } from 'stores/cart_store'
 
 import axios from 'axios'
 
@@ -116,10 +134,14 @@ export default {
     const $q = useQuasar()
     const route = useRoute()
     const router = useRouter()
+    const store = useCounterStore()
 
     const uType = ref(null)
     const confirm = ref(false)
+    const ack = ref(false)
+
     const quant = ref(0)
+
 
     $q.dark.set(false)
     const product = reactive({
@@ -146,6 +168,7 @@ export default {
       .then(
         responses => {
           product.details = responses[0].data
+          product.details.img_url = env.IMG_BASE_URL + product.details.image
 
           let xprice = responses[1].data
           if(uType.value == "sme")
@@ -181,40 +204,13 @@ export default {
     }
 
     function addToCart () {
-      let cart = $q.localStorage.getItem("cart")
+      store.addItem({
+        name: product.details.name,
+        price: product.price,
+        quantity: quant.value
+      })
 
-      let currentdate = new Date()
-      if (cart == null) {
-        cart = {
-          items: [{
-            name: product.details.name,
-            price: product.price,
-            quantity: quant.value
-          }],
-          date: ""
-            // currentdate.getDate() + "/"
-            // + (currentdate.getMonth()+1)  + "/"
-            // + currentdate.getFullYear() + " @ "
-            // + currentdate.getHours() + ":"
-            // + currentdate.getMinutes()
-        }
-        localStorage.setItem("cart", JSON.stringify(cart))
-
-        let local = $q.localStorage.getItem("cart")
-        console.log("ret:", JSON.parse(local))
-      }
-      else {
-        let local = $q.localStorage.getItem("cart")
-        let xCart = JSON.parse(local)
-
-        xCart.items.push({
-          name: product.details.name,
-          price: product.price,
-          quantity: quant.value
-        })
-
-        localStorage.setItem("cart", JSON.stringify(xCart))
-      }
+      ack.value = true
     }
 
     function showDial () {
@@ -231,6 +227,7 @@ export default {
       decrement,
       addToCart,
       confirm,
+      ack,
       showDial
     }
   }

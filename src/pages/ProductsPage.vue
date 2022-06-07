@@ -14,7 +14,7 @@
 
         <div class="prod-name row" @click="goToProduct(product.key)">
           <div class="float-left col">
-            <img class="prod-img" src="~/assets/rods.jpg">
+            <img class="prod-img" :src="product.img_url">
           </div>
 
           <div class="col prod-d float-right">
@@ -113,6 +113,7 @@ export default {
               }
             )
 
+            el.img_url = env.IMG_BASE_URL + el.image
             if(userType == "sme")
               el.price = xprices.sme_price
             else if( userType == "landlord")

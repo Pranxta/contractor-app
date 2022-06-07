@@ -24,7 +24,7 @@
             dark
             icon-right="shopping_cart"
           >
-          <q-badge color="green" floating>{{0}}</q-badge>
+          <q-badge color="green" floating>{{store.getCart.length}}</q-badge>
           </q-btn>
 
 
@@ -71,9 +71,9 @@
 <script>
 import env from '../pages/Env.js'
 import { useQuasar } from 'quasar'
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-
+import { useCounterStore } from 'stores/cart_store'
 
 
 const linksList = [
@@ -130,6 +130,7 @@ export default {
   setup () {
     const $q = useQuasar()
     $q.dark.set(true)
+    const store = useCounterStore()
 
     const leftDrawerOpen = ref(false)
 
@@ -138,6 +139,7 @@ export default {
       last: env.appNameLast,
       essentialLinks: linksList,
       leftDrawerOpen,
+      store,
 
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
