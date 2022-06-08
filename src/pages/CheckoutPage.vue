@@ -9,6 +9,9 @@
 
     <div class="col">
 
+      <div v-if="cart.items.length == 0" class="row total">
+        <h4>No Items In Your Cart</h4>
+      </div>
 
       <div class="product" v-if="cart.items.length>0">
 
@@ -41,7 +44,7 @@
         <span class="text-weight-bold">BDT {{gTotal}}</span>
         <br>
         <span class="text-weight-bold">Total Items: </span>
-        <span class="text-weight-bold"> 5 </span>
+        <span class="text-weight-bold"> {{cart.items.length}} </span>
 
         <br>
         <br>
@@ -51,27 +54,38 @@
         <span class="text-weight-bold">Delivery Address</span>
 
         <br>
-        Adress line 1, detail 1, street unknown
-        <br>
-        Address line 2, detail 2, street whatever
-        <br>
-        Dhaka 1209
+          {{user.details.address}}
         <br>
 
 
-        Phone: 01773344556
+        Phone: {{user.details.phone}}
         <br>
         <br>
+
 
         <q-separator color="red" />
 
         <br>
 
-        <span class="text-weight-bold">Estimated Delivery Date</span>
+        <span class="text-weight-bold">Order Date</span>
         <br>
-        <span class="text-weight-medium">July 31, 2022</span>
+        <span class="text-weight-medium">{{today}}</span>
 
         <br>
+
+
+
+
+
+        <br>
+
+        <span class="text-weight-bold">Estimated Delivery Date</span>
+        <br>
+        <span class="text-weight-medium">{{deliveryDate}}</span>
+
+        <br>
+
+        <h5 class="alert">Your current balance is not sufficient for this transaction</h5>
         <q-btn class="secondary q-ma-sm" color="secondary">change Address</q-btn>
 
 
@@ -79,15 +93,47 @@
 
 
       <div class="col cart-col" v-if="store.cart.length>0">
-        <q-btn class="secondary q-ma-sm" color="primary">Proceed</q-btn>
-        <q-btn class="secondaryq-ma-sm" color="red">cancel</q-btn>
+        <q-btn v-if="resBalance>=0" @click="confirm =true" class="secondary q-ma-sm" color="primary">Proceed</q-btn>
+        <q-btn @click="cart.items.length = 0" class="secondaryq-ma-sm" color="red">cancel</q-btn>
       </div>
 
 
     </div>
 
 
+    <q-dialog v-model="confirm">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
 
+        <q-card-section class="q-pt-none">
+          Please confirm your order by pressing the confirm button
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat @click="submitOrder" label="Confirm" color="primary" v-close-popup />
+          <q-btn flat label="Cancel" color="red" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Your order has been placed! We will get in touch with you shortly.
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="green" v-close-popup />
+
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
 
 
@@ -101,6 +147,7 @@ import env from './Env.js'
 import { useQuasar } from 'quasar'
 import { ref, onMounted,reactive  } from 'vue'
 import { useCounterStore } from 'stores/cart_store'
+import axios from 'axios'
 
 
 export default {
@@ -108,6 +155,21 @@ export default {
     const $q = useQuasar()
     const store = useCounterStore()
     const gTotal = ref(0)
+    const today = ref(null)
+    const resBalance = ref(0)
+    const deliveryDate = ref(null)
+
+    const alert = ref(false)
+    const confirm = ref(false)
+
+
+    const user = reactive({
+      details:{}
+    })
+
+    user.details = $q.localStorage.getItem("user")
+    console.log(user.details)
+
     const cart = reactive({
       items: []
     })
@@ -115,7 +177,15 @@ export default {
     $q.dark.set(false)
 
 
+
+
     onMounted( () => {
+
+      today.value = getDate(0)
+      deliveryDate.value = getDate(3)
+
+      console.log(today.value)
+
       $q.loading.show({
 
         spinnerColor: 'red',
@@ -125,14 +195,19 @@ export default {
         messageColor: 'white'
       })
 
+
+
       cart.items = store.cart
-      console.log(cart)
+
 
       cart.items.forEach(
         el => {
           gTotal.value += el.price*el.quantity
         }
       )
+
+      resBalance.value = user.details.balance -  gTotal.value
+
       $q.loading.hide()
 
       // hiding in 3s
@@ -143,12 +218,74 @@ export default {
 
     })
 
+    function getDate (n) {
+      var today = new Date();
+      var dd = String(today.getDate()+n).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+
+      today = dd + '/' + mm + '/' + yyyy
+      return today
+    }
+
+    function submitOrder() {
+      $q.loading.show()
+      let order = {
+        customer: user.details.name,
+        owner_id: user.details.key,
+        order_date: today.value,
+        delivery_date: deliveryDate.value,
+        order_address: user.details.address,
+        description: JSON.stringify(cart.items),
+        status: false,
+        total:gTotal.value
+      }
+
+      console.log(order)
+      axios.post(env.BASE_URL+ "orders/", order)
+      .then(
+        res => {
+          if(res.data.customer) {
+            store.removeAll()
+            setTimeout('', 1000)
+            displayConfirmation(res.data)
+
+          }
+          else
+            displayError(res.data)
+
+          $q.loading.hide()
+
+        }
+
+      ).catch(
+        err => {
+          displayError(err)
+          $q.loading.hide()
+        }
+      )
+    }
+
+
+    function displayConfirmation (ord) {
+      alert.value = true
+    }
+    function displayError (err) {
+      console.log("order not confirmed",err)
+    }
     return {
       first: env.appNameFirst,
       last: env.appNameLast,
       store,
       cart,
-      gTotal
+      gTotal,
+      user,
+      today,
+      deliveryDate,
+      submitOrder,
+      alert,
+      confirm,
+      resBalance
     }
   }
 }

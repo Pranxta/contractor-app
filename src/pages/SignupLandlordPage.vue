@@ -51,28 +51,40 @@
           class="login-input"
           filled
           type="text"
-          v-model="add2"
-          label="address line 2"
-          hint="leave empty if not needed"
-          lazy-rules
-        />
-
-        <q-input
-          class="login-input"
-          filled
-          type="text"
           v-model="user.nid"
           label="nid number"
           hint="your NID number"
           lazy-rules
         />
 
+        <q-separator color="white"/>
 
+        <q-input
+          class="login-input"
+          filled
+          type="password"
+          v-model="user.password"
+          label="password"
+          hint="atleast 6 characters"
+          lazy-rules
+        />
 
-        <div class="flex-container">
-          <q-btn @click="signup" label="Sign Up" color="primary"/>
-          <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm" />
+        <q-input
+          class="login-input"
+          filled
+          type="password"
+          v-model="password2"
+          label="reconfirm password"
+          hint="reconfirm password"
+          lazy-rules
+        />
+
+        <div class="buttn">
+          <span v-if="!error" class="notice">* Passwords dont match</span>
+          <br>
+          <q-btn @click="submitDetails" label="Sign Up" color="primary"/>
         </div>
+
       </q-form>
     </div>
 
@@ -80,34 +92,65 @@
 </template>
 
 <script>
-
+import env from './Env.js'
 import { useQuasar, QSpinnerFacebook  } from 'quasar'
 import { ref, onMounted, reactive  } from 'vue'
 import axios from 'axios'
-import Env from './Env'
-
-
 
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
+    const password2 = ref("")
+    const error = ref(false)
 
-    const add1 = ref("")
-    const add2 = ref("")
     const user = reactive({
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      nid: "",
-      type: "landlord"
+      name: null,
+      phone: null,
+      email: null,
+      password: null,
+      type: "contractor",
+      role: "user",
+      status: false,
+      balance: 0,
+      address: null,
+      nid: null,
+      created: null
     })
 
 
     onMounted( () => {
-      $q.loading.show({
+      // $q.loading.show({
 
+      //   spinnerColor: 'red',
+      //   spinnerSize: 240,
+      //   backgroundColor: 'burgundy',
+      //   message: 'Confirming...',
+      //   messageColor: 'white'
+      // })
+
+      // // hiding in 3s
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
+
+    })
+
+    function getDate () {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+
+      let dateTime = dd + '/' + mm + '/' + yyyy + " @ "
+        + today.getHours() + ":"
+        + today.getMinutes()
+
+      return dateTime
+    }
+
+    function submitDetails () {
+      $q.loading.show({
         spinnerColor: 'red',
         spinnerSize: 240,
         backgroundColor: 'burgundy',
@@ -115,49 +158,48 @@ export default {
         messageColor: 'white'
       })
 
-      // hiding in 3s
-      timer = setTimeout(() => {
+      if(password2.value ==="" ) {
+        error.value = true
         $q.loading.hide()
-        timer = void 0
-      }, 1000)
+        return
+      }else if( user.password !== password2.value) {
+        error.value = true
+        $q.loading.hide()
+        return
+      }
 
-    })
+      user.password = password2
+      user.created = getDate()
 
-    function signup () {
-      $q.loading.show()
-      if(add2.value !== "" || add2.value !== null)
-      user.address = add1.value + " " + add2.value
-
-      axios.post(Env.BASE_URL + "users/", user)
+      axios.post(env.BASE_URL + "users", user)
       .then(
         res => {
-          console.log(res.data)
           $q.loading.hide()
+          showSuccessDialog()
+        }
+      ).catch(
+        err => {
+          $q.loading.hide()
+          showFailDialog()
         }
       )
-      .catch(
-        err=> {
-          console.log(err)
-          $q.loading.hide()
-        }
-      )
-
     }
 
+    function showSuccessDialog () {
+      console.log("success")
+    }
+
+    function showFailDialog (e) {
+      console.log("error:", e)
+    }
     return {
       user,
-      add1,
-      add2,
-      signup,
+      password2,
+      error,
+      submitDetails
 
-      onReset () {
-        user.name = null
-        user.phone = null
-        user.email = null
-        user.name = null
-        add1.value = null
-        add2.value = null
-      }
+
+
     }
   }
 }
@@ -192,6 +234,14 @@ export default {
 .login-input > div
   background: grey
   min-width: 800px
+
+.buttn
+  width: 100%
+  text-align: center
+
+  button
+    width: 150px
+    margin: 10px auto 40px auto
 
 
 </style>

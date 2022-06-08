@@ -9,8 +9,11 @@
 
     <div class="col">
 
+
       <div v-for="brand in allBrands" >
         <div class="brand">
+
+
 
           <div class="float-left brand-img col">
             <img class="prod-img" :src="imgUrl+brand.image">
@@ -38,7 +41,9 @@
 
       </div>
 
-
+      <div class="alert">
+        <h6 v-if="allBrands.length<1">No Brands found for Category {{cat}}</h6>
+      </div>
 
 
 
@@ -98,8 +103,14 @@ export default {
 
           products.forEach(element => {
 
+            if(element.catName == cat.value)
             brands.push(element.brand)
           })
+
+          if(brands.length == 0) {
+            $q.loading.hide()
+            return
+          }
           filteredBrands = [...new Set(brands)]
           // console.log("filteredBrands: ",filteredBrands)
           getBrands(filteredBrands)
@@ -158,6 +169,17 @@ export default {
 *
   color: grey
   background-color: white
+
+.alert
+  width: 100%
+  margin: 0 auto
+  text-align: center
+
+  h6
+    text-transform: uppercase
+    color: green
+    font-size: 25px
+
 
 .brand-img
   width: 20vw

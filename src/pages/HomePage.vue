@@ -16,7 +16,7 @@
         </q-img>
       </q-card>
 
-      <q-card class="my-card col-sm-3 q-ma-sm">
+      <q-card @click="viewCem" class="my-card col-sm-3 q-ma-sm">
         <q-img src="~/assets/cement.jpg">
           <div class="absolute-bottom text-caption text-center">
             Cement
@@ -24,7 +24,7 @@
         </q-img>
       </q-card>
 
-      <q-card class="my-card col-sm-3 q-ma-sm">
+      <q-card @click="viewSand" class="my-card col-sm-3 q-ma-sm">
         <q-img src="~/assets/sand.jpg">
           <div class="absolute-bottom text-caption text-center">
             Sand
@@ -32,7 +32,7 @@
         </q-img>
       </q-card>
 
-      <q-card class="my-card col-sm-3 q-ma-sm">
+      <q-card @click="viewStone" class="my-card col-sm-3 q-ma-sm">
         <q-img src="~/assets/stones.jpg">
           <div class="absolute-bottom text-caption text-center">
             Stone
@@ -149,6 +149,20 @@ export default {
     function viewRods () {
       router.push('/home/brands/rods')
     }
+
+    function viewCem () {
+      router.push('/home/brands/cement')
+    }
+
+    function viewSand () {
+      router.push('/home/brands/sand')
+    }
+
+    function viewStone () {
+      router.push('/home/brands/stone')
+    }
+
+
     function goToCalculator () {
       router.push('/home/calculatorone')
     }
@@ -157,6 +171,9 @@ export default {
       first: env.appNameFirst,
       last: env.appNameLast,
       viewRods,
+      viewCem,
+      viewSand,
+      viewStone,
       goToCalculator
 
       // onSubmit () {

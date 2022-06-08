@@ -85,7 +85,6 @@ export default {
       //console.log(props.category)
       //console.log(props.brand)
       // console.log(brand)
-      console.log(route.params.data)
 
       $q.loading.show({
 
@@ -139,6 +138,8 @@ export default {
       console.log("clicked")
       router.push("/home/singleproduct/"+key)
     }
+
+
 
     return {
 

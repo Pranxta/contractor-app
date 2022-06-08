@@ -24,6 +24,9 @@ export const useCounterStore = defineStore('counter', {
     },
     removeItem (n) {
      this.cart.splice(n,1)
+    },
+    removeAll() {
+      this.cart.length = 0
     }
   }
 })
