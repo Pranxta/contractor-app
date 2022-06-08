@@ -52,10 +52,8 @@ const routes = [
         component: () => import('src/pages/BrandPage.vue')
       },
       {
-        name: "brandCat",
-        path: 'products/',
+        path: 'products/:blob',
         component: () => import('src/pages/ProductsPage.vue'),
-        props: true
       },
       {
         path: 'singleproduct/:id',

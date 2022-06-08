@@ -13,7 +13,7 @@
         <div class="brand">
 
           <div class="float-left brand-img col">
-            <img class="prod-img" src="~/assets/rods.jpg">
+            <img class="prod-img" :src="imgUrl+brand.image">
           </div>
 
           <div class="brand-text float-right text-right">
@@ -67,6 +67,8 @@ export default {
     const $q = useQuasar()
     const route = useRoute()
     const router = useRouter()
+    const imgUrl = ref(env.IMG_BASE_URL)
+
     const cat = ref("")
     const allBrands = ref([])
 
@@ -95,6 +97,7 @@ export default {
           products = resp.data
 
           products.forEach(element => {
+
             brands.push(element.brand)
           })
           filteredBrands = [...new Set(brands)]
@@ -130,8 +133,8 @@ export default {
     }
 
     function toCatBrand (brnd) {
-
-      router.push({name:"brandCat", params: { category: route.params.cat, brand: brnd }})
+      router.push('/home/products/'+ route.params.cat +"_"+brnd)
+      //router.push({name:"brandCat", params: { category: route.params.cat, brand: brnd }})
     }
 
     return {
@@ -139,6 +142,7 @@ export default {
       last: env.appNameLast,
       cat,
       allBrands,
+      imgUrl,
       toCatBrand
 
     }

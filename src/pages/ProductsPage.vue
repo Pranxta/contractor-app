@@ -2,7 +2,7 @@
   <q-page class="container">
 
     <div class="subtitle q-pa-sm">
-      {{props.category}} > {{props.brand}} > Products
+      {{category}} > {{brand}} > Products
       <q-separator color="grey" />
     </div>
 
@@ -61,17 +61,20 @@ import axios from 'axios'
 
 
 export default {
-  props: {
-    category: String,
-    brand: String
-  },
 
-  setup (props) {
+  setup () {
     const $q = useQuasar()
     const route = useRoute()
     const router = useRouter()
     $q.dark.set(false)
 
+    const category = ref('')
+    const brand = ref('')
+
+    let data = route.params.blob
+    const myArray = data.split("_")
+    category.value = myArray[0]
+    brand.value = myArray[1]
 
 
     const products = ref([])
@@ -82,6 +85,7 @@ export default {
       //console.log(props.category)
       //console.log(props.brand)
       // console.log(brand)
+      console.log(route.params.data)
 
       $q.loading.show({
 
@@ -100,7 +104,7 @@ export default {
       Promise.all([promise1,promise2])
       .then(responses => {
 
-        products.value = responses[0].data.filter( el => (el.brandName == props.brand && el.catName == props.category))
+        products.value = responses[0].data.filter( el => (el.brandName == brand.value && el.catName == category.value))
         allPrices.value = responses[1].data
         console.log(products.value)
         console.log(allPrices.value)
@@ -144,7 +148,8 @@ export default {
       allPrices,
       userType,
       goToProduct,
-      props
+      category,
+      brand
 
     }
   }
