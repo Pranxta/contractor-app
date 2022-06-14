@@ -3,39 +3,35 @@
 
     <div class="signup">
       <q-form
-        @submit="onSubmit"
-        @reset="onReset"
         class="q-gutter-sm"
       >
         <h4>Sign Up</h4>
-        <p class="text-subtitle1">SME</p>
-
+        <p class="text-subtitle1">Landlord</p>
         <q-input
           class="login-input"
           filled
-          v-model="name"
-          label="Organization name"
-          hint="Name of the company"
+          v-model="user.name"
+          label="name *"
+          hint="Name and surname"
           lazy-rules
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
 
-
         <q-input
           class="login-input"
           filled
-          v-model="name"
-          label="name *"
-          hint="Manager's Name and surname"
+          type="text"
+          v-model="user.manager"
+          label="Manager's name"
+          hint="name of immediate supperior at workplace"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
 
         <q-input
           class="login-input"
           filled
           type="email"
-          v-model="email"
+          v-model="user.email"
           label="email address"
           hint="has to be a valid email address"
           lazy-rules
@@ -45,7 +41,7 @@
           class="login-input"
           filled
           type="tel"
-          v-model="phone"
+          v-model="user.phone"
           label="phone number"
           hint="start with +8801"
           lazy-rules
@@ -55,7 +51,7 @@
           class="login-input"
           filled
           type="text"
-          v-model="address"
+          v-model="user.address"
           label="address"
           hint="enter your billing address"
           lazy-rules
@@ -65,9 +61,9 @@
           class="login-input"
           filled
           type="text"
-          v-model="address2"
-          label="address line 2"
-          hint="leave empty if not needed"
+          v-model="user.tin"
+          label="tin number"
+          hint="tax identification number"
           lazy-rules
         />
 
@@ -75,9 +71,9 @@
           class="login-input"
           filled
           type="text"
-          v-model="tradeLicence"
-          label="Trade Licence"
-          hint="Trade Licence"
+          v-model="user.trade_licence"
+          label="trade license number"
+          hint="trade license number of the organization you work for"
           lazy-rules
         />
 
@@ -85,17 +81,38 @@
           class="login-input"
           filled
           type="text"
-          v-model="TIN"
-          label="TIN"
-          hint="TIN number"
+          v-model="user.organization"
+          label="Organization name"
+          hint="name of the organization that employs you"
           lazy-rules
         />
 
+        <q-separator color="white"/>
 
+        <q-input
+          class="login-input"
+          filled
+          type="password"
+          v-model="user.password"
+          label="password"
+          hint="atleast 6 characters"
+          lazy-rules
+        />
 
-        <div class="flex-container">
-          <q-btn label="Sign Up" type="submit" color="primary"/>
-          <q-btn label="Reset" type="reset" color="grey"  class="q-ml-sm" />
+        <q-input
+          class="login-input"
+          filled
+          type="password"
+          v-model="password2"
+          label="reconfirm password"
+          hint="reconfirm password"
+          lazy-rules
+        />
+
+        <div class="buttn">
+          <span v-if="!error" class="notice">* Passwords dont match</span>
+          <br>
+          <q-btn @click="submitDetails" label="Sign Up" color="primary"/>
         </div>
       </q-form>
     </div>
@@ -105,22 +122,70 @@
 
 <script>
 
-import { useQuasar, QSpinnerFacebook } from 'quasar'
-import { ref, onMounted } from 'vue'
+import env from './Env.js'
+import { useQuasar, QSpinnerFacebook  } from 'quasar'
+import { ref, onMounted, reactive  } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default {
   setup () {
     const $q = useQuasar()
-    let timer
+    const password2 = ref("")
+    const error = ref(false)
 
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
+    const router = useRouter()
+
+    const user = reactive({
+      name: null,
+      manager: null,
+      phone: null,
+      email: null,
+      password: null,
+      type: "sme",
+      role: "user",
+      status: false,
+      balance: 0,
+      tin: null,
+      trade_licence: null,
+      organization: null,
+      created: null
+    })
 
 
     onMounted( () => {
-      $q.loading.show({
+      // $q.loading.show({
 
+      //   spinnerColor: 'red',
+      //   spinnerSize: 240,
+      //   backgroundColor: 'burgundy',
+      //   message: 'Confirming...',
+      //   messageColor: 'white'
+      // })
+
+      // // hiding in 3s
+      // timer = setTimeout(() => {
+      //   $q.loading.hide()
+      //   timer = void 0
+      // }, 3000)
+
+    })
+
+    function getDate () {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+
+      let dateTime = dd + '/' + mm + '/' + yyyy + " @ "
+        + today.getHours() + ":"
+        + today.getMinutes()
+
+      return dateTime
+    }
+
+    function submitDetails () {
+      $q.loading.show({
         spinnerColor: 'red',
         spinnerSize: 240,
         backgroundColor: 'burgundy',
@@ -128,43 +193,49 @@ export default {
         messageColor: 'white'
       })
 
-      // hiding in 3s
-      timer = setTimeout(() => {
+      if(password2.value ==="" ) {
+        error.value = true
         $q.loading.hide()
-        timer = void 0
-      }, 3000)
-
-    })
-
-    return {
-      name,
-      age,
-      accept,
-
-      onSubmit () {
-        if (accept.value !== true) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
-        }
-        else {
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Submitted'
-          })
-        }
-      },
-
-      onReset () {
-        name.value = null
-        age.value = null
-        accept.value = false
+        return
+      }else if( user.password !== password2.value) {
+        error.value = true
+        $q.loading.hide()
+        return
       }
+
+      user.password = password2
+      user.created = getDate()
+
+      axios.post(env.BASE_URL + "users", user)
+      .then(
+        res => {
+          $q.loading.hide()
+          router.push('home/')
+          showSuccessDialog()
+        }
+      ).catch(
+        err => {
+          $q.loading.hide()
+          showFailDialog()
+        }
+      )
+    }
+
+    function showSuccessDialog () {
+      console.log("success")
+    }
+
+    function showFailDialog (e) {
+      console.log("error:", e)
+    }
+    return {
+      user,
+      password2,
+      error,
+      submitDetails
+
+
+
     }
   }
 }
@@ -177,6 +248,7 @@ export default {
 
 .flex-container
   display: flex
+  flex-direction: column
   justify-content: center
 
 .signup
@@ -185,7 +257,6 @@ export default {
 
   button
     margin: 10px auto
-
   h4
     margin: 10px 10px 0px 10px
     text-align: center
@@ -200,5 +271,12 @@ export default {
   background: grey
   min-width: 800px
 
+.buttn
+  width: 100%
+  text-align: center
+
+  button
+    width: 150px
+    margin: 10px auto 40px auto
 
 </style>

@@ -100,12 +100,15 @@ import env from './Env.js'
 import { useQuasar, QSpinnerFacebook  } from 'quasar'
 import { ref, onMounted, reactive  } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default {
   setup () {
     const $q = useQuasar()
     const password2 = ref("")
     const error = ref(false)
+
+    const router = useRouter()
 
     const user = reactive({
       name: null,
@@ -179,6 +182,7 @@ export default {
       .then(
         res => {
           $q.loading.hide()
+          router.push('home/')
           showSuccessDialog()
         }
       ).catch(

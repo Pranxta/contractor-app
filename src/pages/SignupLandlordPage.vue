@@ -41,7 +41,7 @@
           class="login-input"
           filled
           type="text"
-          v-model="add1"
+          v-model="user.address"
           label="address"
           hint="enter your billing address"
           lazy-rules
@@ -96,11 +96,13 @@ import env from './Env.js'
 import { useQuasar, QSpinnerFacebook  } from 'quasar'
 import { ref, onMounted, reactive  } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default {
   setup () {
     const $q = useQuasar()
     const password2 = ref("")
+    const router = useRouter()
     const error = ref(false)
 
     const user = reactive({
@@ -176,6 +178,7 @@ export default {
         res => {
           $q.loading.hide()
           showSuccessDialog()
+
         }
       ).catch(
         err => {
@@ -187,6 +190,7 @@ export default {
 
     function showSuccessDialog () {
       console.log("success")
+      router.push('home/')
     }
 
     function showFailDialog (e) {

@@ -1,0 +1,7 @@
+{
+  "appId": "org.contractor.pocket.app",
+  "appName": "com.pocket.contractor",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}
